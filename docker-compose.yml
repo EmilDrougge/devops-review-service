@@ -1,0 +1,33 @@
+services:
+  review-db:
+    image: mysql:8
+    container_name: review-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: review_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - review-db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  review-service:
+    build: .
+    container_name: review-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      review-db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://review-db:3306/review_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      BOOKING_SERVICE_URL: http://booking-service:8081
+
+volumes:
+  review-db-data:
