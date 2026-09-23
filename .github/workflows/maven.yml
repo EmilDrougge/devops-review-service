@@ -46,7 +46,8 @@ jobs:
 
       - name: Build and push docker image
         if: github.event_name == 'push'
-        run: docker build -t emildrougge/devops-review-service:latest .
+        run: |
+             docker build -t emildrougge/devops-review-service:latest .
              docker push emildrougge/devops-review-service:latest .
 
         env:
