@@ -48,7 +48,7 @@ jobs:
         if: github.event_name == 'push'
         run: |
              docker build -t emildrougge/devops-review-service:latest .
-             docker push emildrougge/devops-review-service:latest .
+             docker push emildrougge/devops-review-service:latest
 
         env:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/review_db
